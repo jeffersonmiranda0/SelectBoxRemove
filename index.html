@@ -1,0 +1,77 @@
+<div>
+  <select onfocus="selectBox.setOldValue(this.value, this)" onchange="selectBox.changeSelectBox(this.value)">
+    <option value="">Selecione...</option>
+    <option value="0">Teste</option>
+    <option value="1">Teste 1</option>
+    <option value="2">Teste 2</option>
+    <option value="3">Teste 3</option>
+    <option value="4">Teste 4</option>
+  </select>
+  <select onfocus="selectBox.setOldValue(this.value, this)" onchange="selectBox.changeSelectBox(this.value)">
+    <option value="">Selecione...</option>
+    <option value="0">Teste</option>
+    <option value="1">Teste 1</option>
+    <option value="2">Teste 2</option>
+    <option value="3">Teste 3</option>
+    <option value="4">Teste 4</option>
+  </select>
+</div>
+
+<script>
+  this.value = "";
+
+
+  var SelectBoxRemove = function() {
+    var self = this;
+
+    this.oldvalue = '';
+    this.oldname = '';
+
+    this.setOldValue = function(value, element) {
+      if (value != '') {
+        self.oldValue = value;
+
+        for (var i = 0; i < element.length; i++) {
+          if (element[i].value == value) {
+            self.oldName = element[i].text;
+          } else {
+            self.oldvalue = '';
+            self.oldname = '';
+          }
+        }
+      } else {
+        self.oldvalue = '';
+        self.oldname = '';
+      }
+    };
+
+    this.changeSelectBox = function(value) {
+      var select = document.getElementsByTagName('select');
+      var options = '';
+
+      for (var i = 0; i < select.length; i++) {
+        for (var x = 0; x < select[i].length; x++) {
+          if (select[i].value != value) {
+            if (select[i][x].value == value && value != '') {
+              self.oldname = select[i][x].value;
+              select[i][x].remove();
+            }
+          }
+        }
+
+        if (select[i].value != self.oldValue && select[i].value != value && value != '' && self.oldName != undefined) {
+          var node = document.createElement('option');
+          node.text = self.oldName;
+          node.value = self.oldValue;
+          select[i].appendChild(node);
+        }
+      }
+
+      self.oldValue = value;
+    }
+  };
+
+
+  var selectBox = new SelectBoxRemove();
+
+</script>
